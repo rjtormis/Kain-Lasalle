@@ -1,4 +1,4 @@
-import { connectToDatabases, closeDatabaseConnections } from "./utilities/general";
+// import { connectToDatabases, closeDatabaseConnections } from "./utilities/general.js";
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -6,10 +6,48 @@ const MongoClient = require("mongodb").MongoClient;
 const CryptoJS = require("crypto-js");
 const ObjectId = require("mongodb").ObjectId;
 
-export const app = express();
+const app = express();
 const port = 3000;
 
 let databases = {};
+
+async function connectToDatabases() {
+  try {
+    for (const collectionKey in dbConfig) {
+      const collectionConfig = dbConfig[collectionKey];
+      const client = await MongoClient.connect(collectionConfig.url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      const database = client.db(collectionConfig.dbName);
+      const collection = database.collection(collectionConfig.collectionName);
+
+      databases[collectionKey] = {
+        client: client,
+        database: database,
+        collection: collection,
+      };
+
+      console.log(`Connected to MongoDB for collection: ${collectionKey}`);
+    }
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+    throw err;
+  }
+}
+
+async function closeDatabaseConnections() {
+  try {
+    for (const collectionKey in databases) {
+      const db = databases[collectionKey];
+      await db.client.close();
+      console.log(`Closed connection to MongoDB for collection: ${collectionKey}`);
+    }
+  } catch (err) {
+    console.error("Error closing MongoDB connections:", err);
+    throw err;
+  }
+}
 
 app.use(bodyParser.json());
 app.use(express.static("views"));
