@@ -1,37 +1,16 @@
-// export async function connectToDatabases() {
-//   try {
-//     for (const collectionKey in dbConfig) {
-//       const collectionConfig = dbConfig[collectionKey];
-//       const client = await MongoClient.connect(collectionConfig.url, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//       });
-//       const database = client.db(collectionConfig.dbName);
-//       const collection = database.collection(collectionConfig.collectionName);
+require("dotenv").config();
 
-//       databases[collectionKey] = {
-//         client: client,
-//         database: database,
-//         collection: collection,
-//       };
+// Follow proper export, naka commonJS yung project setup.
+const mongoose = require("mongoose");
+const DB = process.env.DATABASE;
+const PORT = parseInt(process.env.PORT) || 3000;
 
-//       console.log(`Connected to MongoDB for collection: ${collectionKey}`);
-//     }
-//   } catch (err) {
-//     console.error("Error connecting to MongoDB:", err);
-//     throw err;
-//   }
-// }
+async function ConnectMongoDB() {
+  try {
+    await mongoose.connect(DB);
+  } catch (e) {
+    console.log("Failed to set up database connection:", e);
+  }
+}
 
-// export async function closeDatabaseConnections() {
-//   try {
-//     for (const collectionKey in databases) {
-//       const db = databases[collectionKey];
-//       await db.client.close();
-//       console.log(`Closed connection to MongoDB for collection: ${collectionKey}`);
-//     }
-//   } catch (err) {
-//     console.error("Error closing MongoDB connections:", err);
-//     throw err;
-//   }
-// }
+module.exports = { PORT, ConnectMongoDB };
