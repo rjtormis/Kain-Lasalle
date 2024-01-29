@@ -9,11 +9,13 @@ const { ConnectMongoDB, PORT } = require("./utilities/general");
 
 // Routes
 const mainRoute = require("./route/main.route");
+const shopRoute = require("./route/shop.route");
 
 const app = express();
 
 // Function that enables the database.
 ConnectMongoDB();
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -22,6 +24,7 @@ app.use(express.static("views"));
 
 // Index or main page
 app.use("/", mainRoute);
+app.use("/shops", shopRoute);
 
 // app.post("/login", async (req, res) => {
 //   try {
