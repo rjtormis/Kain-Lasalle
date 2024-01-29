@@ -10,6 +10,15 @@ const { ConnectMongoDB, PORT } = require("./utilities/general");
 // Routes
 const mainRoute = require("./route/main.route");
 const shopRoute = require("./route/shop.route");
+const aboutRoute = require("./route/about.route");
+const adminRoute = require("./route/admin.route");
+const adloginRoute = require("./route/adlogin.route");
+const cartRoute = require("./route/cart.route");
+const contactRoute = require("./route/contact.route");
+const loginRoute = require("./route/login.route");
+const homepageRoute = require("./route/homepage.route");
+const profileRoute = require("./route/profile.route");
+const vendorRoute = require("./route/vendor.route");
 
 // Schema
 const User = require("./schema/userSchema");
@@ -28,6 +37,16 @@ app.use(express.static("views"));
 // Index or main page
 app.use("/", mainRoute);
 app.use("/shops", shopRoute);
+app.use("/", adminRoute);
+app.use("/", aboutRoute);
+app.use("/", adloginRoute);
+app.use("/", cartRoute);
+app.use("/", contactRoute);
+app.use("/", loginRoute);
+app.use("/", homepageRoute);
+app.use("/", profileRoute);
+app.use("/", vendorRoute);
+
 
 app.post("/login", async (req, res) => {
   try {
