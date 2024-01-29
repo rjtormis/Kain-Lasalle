@@ -22,14 +22,17 @@ const registerUser = async (req, res) => {
       password,
     }).save();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Registration successful! Redirecting to login",
-        userId: result.id,
-      })
-      .redirect("/");
+    // Returning JSON is optional unless you use frontend framework.
+    return (
+      res
+        // .status(200)
+        // .json({
+        //   success: true,
+        //   message: "Registration successful! Redirecting to login",
+        //   userId: result.id,
+        // })
+        .redirect("/")
+    );
   } catch (err) {
     console.error("Error during registration:", err);
     res.status(500).json({ success: false, message: "Internal Server Error" });

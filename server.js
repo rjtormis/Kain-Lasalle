@@ -44,7 +44,7 @@ app.post("/login", async (req, res) => {
 
     if (hashedPassword === user.password) {
       // Set a cookie with the user's email
-      res.cookie("loggedInUserEmail", user.schoolEmail, { maxAge: 900000, httpOnly: true }); // Adjust maxAge as needed
+      // res.cookie("loggedInUserEmail", user.schoolEmail, { maxAge: 900000, httpOnly: true }); // Adjust maxAge as needed
       res.status(200).json({ success: true });
     } else {
       res.status(401).json({ success: false, message: "Incorrect password" });
